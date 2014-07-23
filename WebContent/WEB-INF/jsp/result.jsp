@@ -1,8 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 		<div class="row row-offcanvas row-offcanvas-right">
-<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-	<form class="form-horizontal" role="form" method="post">
+<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+	<form class="form-horizontal" method="post">
 		<input type="hidden" value="${step}" name="step">
 		<fieldset>
 			<legend>Result</legend>

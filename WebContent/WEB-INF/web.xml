@@ -13,7 +13,7 @@
 		</init-param>
 		<init-param>
 			<param-name>ignore</param-name>
-			<param-value>^(.+[.])(png|gif|jpg|js|css|jspx|jpeg|html)$</param-value>
+			<param-value>^(.+[.])(png|gif|jpg|js|css|jspx|jpeg|html|woff)$</param-value>
 		</init-param>	
 	</filter>
 	<filter-mapping>
