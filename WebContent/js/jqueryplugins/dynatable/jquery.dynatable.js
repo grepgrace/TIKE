@@ -302,14 +302,15 @@
 
       td += '"';
     }
-
+    if(!html)html="";
+    if(typeof(html)=="string"&&html.indexOf("\r\n"))html=html.replace("\r\n","<br />");
     return td + '>' + html + '</td>';
   };
 
   function defaultAttributeWriter(record) {
     // `this` is the column object in settings.columns
     // TODO: automatically convert common types, such as arrays and objects, to string
-    return record[this.id];
+    return record[this.label];
   };
 
   function defaultAttributeReader(cell, record) {
