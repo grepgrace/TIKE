@@ -540,8 +540,11 @@ List<MappingField> fields =  entity.getMappingFields();
 		dao.clear(table, condition);
 	}
 	
-	protected void executeSql(String msql){
-		Sql sql = Sqls.create(msql);
+	public void execute(String msql) {
+		execute(Sqls.create(msql));
+	}
+
+	public void execute(Sql sql) {
 		dao.execute(sql);
 	}
 }
