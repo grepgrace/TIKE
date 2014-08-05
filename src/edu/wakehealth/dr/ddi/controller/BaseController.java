@@ -10,12 +10,14 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 
 import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.View;
 import org.nutz.mvc.view.JspView;
 
 import edu.wakehealth.dr.ddi.dao.BasicDao;
 
 
+@IocBean
 public class BaseController {
 
 	@Inject
