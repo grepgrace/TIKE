@@ -1,20 +1,16 @@
 package edu.wakehealth.test;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
 import java.util.List;
 
 import javax.xml.bind.JAXB;
-
-import edu.wakehealth.dr.ddi.model.geo.eFetchRecord;
 
 public class NutZTest {
 
 	public static void main(String[] args) {
 
+		// www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE10893&targ=self&form=text&view=full
 		String xml = "";
 		System.out.println("List".equals(List.class.getSimpleName()));
 

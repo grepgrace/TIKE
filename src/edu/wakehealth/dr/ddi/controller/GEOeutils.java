@@ -27,33 +27,29 @@ public class GEOeutils extends BaseController {
 
 	@At()
 	public View esearch(Integer perPage, Integer page, Integer offset, HttpServletRequest req) {
+		// GDS4388		100004388
+		// GPL96		100000096
+		// GSE25065		200025065
+		// GSM615828	300615828
 		
 		String keyword = "breast cancer";
+		String db = "gds";
+		String retMax = "10";
 		try {
 			EUtilsServiceStub service = new EUtilsServiceStub();
 
-			// call NCBI EInfo utility
-//			EInfoRequest req1 = new EInfoRequest();
-//			EInfoResult res = service.run_eInfo(req1);
-//			for (int i = 0; i < res.getDbList().getDbName().length; i++) {
-//				// System.out.println(res.getDbList().getDbName()[i]);
-//			}
-
 			ESearchRequest eSearchReq = new ESearchRequest();
 			eSearchReq.setTerm(keyword);
-			eSearchReq.setDb("gds");
-			eSearchReq.setRetMax("10");
+			eSearchReq.setDb(db);
+			eSearchReq.setRetMax(retMax);
 			ESearchResult eSearchRet = service.run_eSearch(eSearchReq);
-			// for (int i = 0; i < eSearchRet.getIdList().getId().length; i++) {
-			// // System.out.println(eSearchRet.getIdList().getId()[i]);
-			// }
 
 			String idsStr = Arrays.toString(eSearchRet.getIdList().getId());
 			idsStr = idsStr.toString().substring(1, idsStr.length() - 1);
 
 			ESummaryRequest eSummaryRequest = new ESummaryRequest();
 			eSummaryRequest.setId(idsStr);
-			eSummaryRequest.setDb("gds");
+			eSummaryRequest.setDb(db);
 			ESummaryResult eSummaryResult = service.run_eSummary(eSummaryRequest);
 			for (DocSumType doc : eSummaryResult.getDocSum()) {
 				Integer id = Integer.valueOf(doc.getId());
@@ -62,7 +58,7 @@ public class GEOeutils extends BaseController {
 						geo_gds.getCode());
 				if(basicDao.searchCount(Geo_gds.class, cd)==0){basicDao.save(geo_gds);} 
 				else {basicDao.update(geo_gds);}
-				// delete all item
+				// delete all gds item
 				cd = Cnd.where("Gdsid", "=", geo_gds.getId());
 				basicDao.delete(Geo_gds_item.class.getSimpleName(), cd);
 				saveGeo_gds_item(doc.getItem(),null,geo_gds);

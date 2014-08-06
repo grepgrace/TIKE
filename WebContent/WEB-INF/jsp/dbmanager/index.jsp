@@ -22,7 +22,7 @@
 $('#my-final-table').dynatable({
 	dataset: {
 	    ajax: true,
-	    ajaxUrl: '${base}/JsonAPI/Get${name}',
+	    ajaxUrl: '${base}/DBManager/GetJson?model=${name}',
 	    ajaxOnLoad: true,
 	    records: []
 	  }
