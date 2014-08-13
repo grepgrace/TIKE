@@ -69,7 +69,13 @@ public class BasicDao {
 		return dao.query(c, condition, null);
 		
 	}
-	
+
+	public <T> List<T> search(Class<T> c) {
+		Condition condition = Cnd.where("1", "=", "1");
+		return dao.query(c, condition, null);
+
+	}
+
 	/**
 	 * 分页查询表中所有数据
 	 * @param <T>
@@ -126,11 +132,11 @@ public class BasicDao {
 	 * @param t
 	 * @return 返回增加到数据库的这条数据
 	 */
-	public <T> T save(T t){
+	public <T> T insert(T t){
 		return dao.insert(t);
 	}
-	
-	public void save(String table,Chain chain){
+
+	public void insert(String table,Chain chain){
 		dao.insert(table, chain);
 	}
 	

@@ -6,6 +6,11 @@ import java.util.List;
 
 import javax.xml.bind.JAXB;
 
+import org.nutz.lang.Mirror;
+
+import edu.wakehealth.dr.ddi.model.DBTable;
+import edu.wakehealth.dr.ddi.model.geo.GEO_Data;
+
 public class NutZTest {
 
 	public static void main(String[] args) {
@@ -13,6 +18,11 @@ public class NutZTest {
 		// www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE10893&targ=self&form=text&view=full
 		String xml = "";
 		System.out.println("List".equals(List.class.getSimpleName()));
+
+		Mirror<GEO_Data> mirror = Mirror.me(GEO_Data.class);
+		GEO_Data geo = new GEO_Data();
+		mirror.setValue(geo, "setAccession", "Accession");
+		System.out.println(geo.getAccession());
 
 //		// xml 2 class
 		xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
