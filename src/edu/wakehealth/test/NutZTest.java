@@ -1,19 +1,17 @@
 package edu.wakehealth.test;
 
-import java.io.*;
-import java.net.*;
 import java.util.List;
-
-import javax.xml.bind.JAXB;
 
 import org.nutz.lang.Mirror;
 
-import edu.wakehealth.dr.ddi.model.DBTable;
 import edu.wakehealth.dr.ddi.model.geo.GEO_Data;
+import edu.wakehealth.dr.ddi.utils.Tools;
 
 public class NutZTest {
 
 	public static void main(String[] args) {
+
+		System.out.println("gsm123".replaceAll("\\d+", ""));
 
 		// www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE10893&targ=self&form=text&view=full
 		String xml = "";
@@ -23,6 +21,23 @@ public class NutZTest {
 		GEO_Data geo = new GEO_Data();
 		mirror.setValue(geo, "setAccession", "Accession");
 		System.out.println(geo.getAccession());
+		double num = 10 / (double) 3.0;
+		System.out.println(num);
+		System.out.println(Math.ceil(10 / (double) 3));
+		System.out.println(Math.ceil(num));
+		System.out.println(Math.ceil(3.33333333));
+		
+		System.out.println(Tools.toString(new String[] { "a", "b", "c" }, ";"));
+
+		// original seating chart with both sets of seats combined
+		// int[] schart = new int[3000];
+		// for (int i = 0; i < 3000; i++)
+		// schart[i] = i;
+		// // populating first class seats
+		// int[] fcseats = Arrays.copyOfRange(schart, 0, 100);
+		// // checking array is correctly populated
+		// for (int i = 0; i <= fcseats.length; i++)
+		// System.out.println(fcseats[i]);
 
 //		// xml 2 class
 		xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";

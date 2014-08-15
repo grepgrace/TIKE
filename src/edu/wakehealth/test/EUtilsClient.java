@@ -30,7 +30,7 @@ public class EUtilsClient {
 			eSearchReq.setRetMax("10");
 			ESearchResult eSearchRet = service.run_eSearch(eSearchReq);
 			for (int i = 0; i < eSearchRet.getIdList().getId().length; i++) {
-				// System.out.println(eSearchRet.getIdList().getId()[i]);
+				System.out.println(eSearchRet.getIdList().getId()[i]);
 			}
 
 			ESummaryRequest eSummaryRequest = new ESummaryRequest();
@@ -44,7 +44,7 @@ public class EUtilsClient {
 					System.out.println("    " + eSummaryResult.getDocSum()[i].getItem()[k].getName() + ": "
 							+ eSummaryResult.getDocSum()[i].getItem()[k].getItemContent());
 				}
-				System.out.println(Tools.getItemType("SSInfo", eSummaryResult.getDocSum()[i].getItem()).getItemContent());
+				System.out.println(Tools.get("SSInfo", eSummaryResult.getDocSum()[i].getItem()).getItemContent());
 			}
 
 //			EFetchTaxonServiceStub eFetchTaxonServiceStub = new EFetchTaxonServiceStub();

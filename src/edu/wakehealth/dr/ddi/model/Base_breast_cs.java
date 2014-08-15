@@ -5,6 +5,7 @@ import org.nutz.dao.entity.annotation.Table;
 @Table("base_breast_cs")
 public class Base_breast_cs {
 
+	@org.nutz.dao.entity.annotation.Id
 	private int Id;
 	private String Name;
 	private String Label;

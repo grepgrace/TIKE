@@ -16,6 +16,8 @@ public class GEO_Data {
 	private String summary;
 	private String GPL;
 	private String GSE;
+	private String GSM;
+	private String Relations;
 	private String taxon;
 	private String entryType;
 	private String gdsType;
@@ -247,6 +249,24 @@ public class GEO_Data {
 
 	public GEO_Data setGEO2R(String gEO2R) {
 		GEO2R = gEO2R;
+		return this;
+	}
+
+	public String getGSM() {
+		return GSM;
+	}
+
+	public GEO_Data setGSM(String gSM) {
+		GSM = gSM;
+		return this;
+	}
+
+	public String getRelations() {
+		return Relations;
+	}
+
+	public GEO_Data setRelations(String relations) {
+		Relations = relations;
 		return this;
 	}
 
