@@ -1,5 +1,6 @@
 package edu.wakehealth.test;
 
+import java.util.Date;
 import java.util.List;
 
 import org.nutz.lang.Mirror;
@@ -11,7 +12,6 @@ public class NutZTest {
 
 	public static void main(String[] args) {
 
-		System.out.println("gsm123".replaceAll("\\d+", ""));
 
 		// www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE10893&targ=self&form=text&view=full
 		String xml = "";

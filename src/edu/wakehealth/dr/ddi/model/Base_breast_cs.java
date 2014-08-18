@@ -11,6 +11,7 @@ public class Base_breast_cs {
 	private String Label;
 	private String Description;
 	private String Keywords;
+	private boolean isGeiAllGEOData;
 
 	public int getId() {
 		return Id;
@@ -56,6 +57,16 @@ public class Base_breast_cs {
 		Keywords = keywords;
 		return this;
 	}
+
+	public boolean isGeiAllGEOData() {
+		return isGeiAllGEOData;
+	}
+
+	public Base_breast_cs setGeiAllGEOData(boolean isGeiAllGEOData) {
+		this.isGeiAllGEOData = isGeiAllGEOData;
+		return this;
+	}
+
 
 
 }

@@ -35,6 +35,7 @@ public class GEO_Data {
 	private String PubMedIds;
 	private String FTPLink;
 	private String GEO2R;
+	private boolean isUpdated;
 
 	public Integer getId() {
 		return Id;
@@ -269,6 +270,16 @@ public class GEO_Data {
 		Relations = relations;
 		return this;
 	}
+
+	public boolean isUpdated() {
+		return isUpdated;
+	}
+
+	public GEO_Data setUpdated(boolean isUpdate) {
+		this.isUpdated = isUpdate;
+		return this;
+	}
+
 
 
 

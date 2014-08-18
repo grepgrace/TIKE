@@ -33,4 +33,10 @@
 		<error-code>500</error-code>
 		<location>/500.jsp</location>
 	</error-page>
+	
+	<listener>
+	  <listener-class>
+	    edu.wakehealth.test.ContextListener
+	  </listener-class>
+	</listener>
 </web-app>
