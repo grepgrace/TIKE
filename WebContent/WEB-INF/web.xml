@@ -36,7 +36,7 @@
 	
 	<listener>
 	  <listener-class>
-	    edu.wakehealth.test.ContextListener
+	    edu.wakehealth.dr.ddi.ContextListener
 	  </listener-class>
 	</listener>
 </web-app>

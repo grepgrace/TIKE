@@ -18,6 +18,8 @@ import org.nutz.dao.util.cri.SqlExpression;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+
+import edu.wakehealth.dr.ddi.model.geo.MimeMap;
 /**
  * 基本数据库操作类
  * @author Administrator
@@ -552,5 +554,9 @@ List<MappingField> fields =  entity.getMappingFields();
 
 	public void execute(Sql sql) {
 		dao.execute(sql);
+	}
+
+	public <T> void create(Class<T> c, boolean b) {
+		dao.create(c, false);
 	}
 }

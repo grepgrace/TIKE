@@ -1,12 +1,20 @@
 package edu.wakehealth.dr.ddi.controller;
 
+import edu.wakehealth.dr.ddi.dao.GEODao;
 import edu.wakehealth.dr.ddi.model.Base_breast_cs;
 import edu.wakehealth.dr.ddi.model.geo.GEO_Data;
 import edu.wakehealth.dr.ddi.model.geo.GEO_Link_GDS2Key;
+import edu.wakehealth.dr.ddi.model.geo.MimeMap;
 import edu.wakehealth.dr.ddi.utils.Tools;
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceStub;
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceStub.*;
+import gov.nih.nlm.nls.metamap.AcronymsAbbrevs;
+import gov.nih.nlm.nls.metamap.MetaMapApi;
+import gov.nih.nlm.nls.metamap.MetaMapApiImpl;
+import gov.nih.nlm.nls.skr.GenericObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,22 +25,27 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.axis2.AxisFault;
-import org.apache.bcel.generic.IXOR;
 import org.apache.commons.lang3.ArrayUtils;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 import org.nutz.ioc.annotation.InjectName;
+import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.FailToSetValueException;
 import org.nutz.lang.Mirror;
 import org.nutz.mvc.View;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.GET;
+import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.view.UTF8JsonView;
 
 @IocBean
 @InjectName
 @At()
 public class GEOeutils extends BaseController {
+
+	@Inject
+	protected GEODao gEODao;
 
 	EUtilsServiceStub service;
 	String db = "gds";
@@ -234,6 +247,34 @@ public class GEOeutils extends BaseController {
 	}
 	
 	@At()
+	public View TestgetSummaryKeys() {
+		// get random GSE, make sum(length(summary))<500,000
+		// upload sun(summary) to MetaMap to get key frequency
+		// save the result to db
+		// loop 10 times
+		// Analysis the result to find key
+		UTF8JsonView jsonView = new UTF8JsonView(null);
+
+		List<GEO_Data> listGeo = gEODao.getRand();
+		StringBuilder sBuilder = new StringBuilder();
+		int i = 0;
+		while ((sBuilder.toString()+(listGeo.get(i).getSummary())).length()*1.001 < 500000 && i < listGeo.size()) {
+			// sBuilder.append("\r\n" + listGeo.get(i).getId());
+			sBuilder.append(listGeo.get(i).getSummary());
+			i++;
+		}
+		System.out.println("sBuilder: " + sBuilder.toString());
+		System.out.println("sBuilder.length: " + sBuilder.toString().length());
+		String results = getMimeMapRemote(sBuilder.toString());
+		List<MimeMap> listMM = MimeMap.getList(results);
+		for (MimeMap mimeMap : listMM) {
+			basicDao.insert(mimeMap);
+		}
+
+		return jsonView;
+	}
+
+	@At()
 	public View TestGetMaxGeoData(String retMax) {
 		UTF8JsonView jsonView = new UTF8JsonView(null);
 
@@ -319,6 +360,110 @@ public class GEOeutils extends BaseController {
 		}
 
 		jsonView.setData("success");
+		return jsonView;
+	}
+
+	@At()
+	@GET
+	public View TestgetMimeMap(HttpServletRequest req) {
+		return setView(req, "test/MimeMap");
+	}
+
+	@At()
+	@POST
+	public View TestgetMimeMap(String InputText, HttpServletRequest req) {
+		if (InputText != null && !"".equals(InputText.trim()))
+			req.setAttribute("result", getMimeMapLocal(InputText));
+
+		return setView(req, "test/MimeMap");
+	}
+
+	public static void getMimeMap() throws IOException {
+		String dir = "C:\\Users\\kelu\\Downloads\\public_mm\\";
+		String cmd = "cmd /c " + dir + "bin\\metamap14.bat -AN " + dir + "sample.txt";
+		System.out.println(cmd);
+		// Runtime.getRuntime().exec(cmd);
+		// Execute command
+		Process child = Runtime.getRuntime().exec(cmd);
+
+		InputStream in = child.getInputStream();
+		System.out.println(Tools.getString(in));
+	}
+
+	// Fielded MetaMap Indexing (MMI) Output, XML Output, and Human Readable
+	// Output are not supported by MetaMap Java API.
+	public String getMimeMapLocal(String terms) {
+		MetaMapApi api = new MetaMapApiImpl();
+		api.setHost("192.168.56.102");
+		api.setPort(8066);
+		api.setOptions("-N");
+		List<gov.nih.nlm.nls.metamap.Result> resultList = api.processCitationsFromString(terms);
+		for (int i = 0; i < resultList.size(); i++) {
+			gov.nih.nlm.nls.metamap.Result result = resultList.get(i);
+			List<AcronymsAbbrevs> aaList;
+			try {
+				aaList = result.getAcronymsAbbrevs();
+				if (aaList.size() > 0) {
+					System.out.println("Acronyms and Abbreviations:");
+					for (AcronymsAbbrevs e : aaList) {
+						System.out.println("Acronym: " + e.getAcronym());
+						System.out.println("Expansion: " + e.getExpansion());
+						System.out.println("Count list: " + e.getCountList());
+						System.out.println("CUI list: " + e.getCUIList());
+					}
+				} else {
+					System.out.println(" None.");
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+		return "";
+	}
+
+	// APIText must less than 10000 characters
+	// UpLoad_File must less than 500 KB size
+	public String getMimeMapRemote(String terms) {
+
+		// remove all non ASCII chars
+		terms = terms.replaceAll("[^\\p{ASCII}]", "");
+
+		String results = null;
+
+		GenericObject myIntMMObj = new GenericObject(100,"keluwakehealthedu", "KELU@uts.nlm.nih.gov");
+		myIntMMObj.setField("Email_Address", "kelu@wakehealth.edu");
+		StringBuffer buffer = new StringBuffer(terms);
+		String bufferStr = buffer.toString();
+		myIntMMObj.setField("APIText", bufferStr);
+		// myIntMMObj.setFileField("UpLoad_File", "./sample.txt");
+		myIntMMObj.setField("KSOURCE", "1314");
+		myIntMMObj.setField("COMMAND_ARGS", "-iDN --silent");
+
+		try {
+			results = myIntMMObj.handleSubmission();
+		} catch (RuntimeException ex) {
+			System.err.println("");
+			System.err.print("An ERROR has occurred while processing your");
+			System.err.println(" request, please review any");
+			System.err.print("lines beginning with \"Error:\" above and the");
+			System.err.println(" trace below for indications of");
+			System.err.println("what may have gone wrong.");
+			System.err.println("");
+			System.err.println("Trace:");
+			ex.printStackTrace();
+		} // catch
+		return results;
+	}
+
+	@At()
+	public View TestcreateTable() {
+		UTF8JsonView jsonView = new UTF8JsonView(null);
+		try {
+			basicDao.create(MimeMap.class, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonView.setData(e.getMessage());
+		}
 		return jsonView;
 	}
 

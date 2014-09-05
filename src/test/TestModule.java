@@ -1,4 +1,4 @@
-package edu.wakehealth.test;
+package test;
 
 import org.nutz.mvc.View;
 import org.nutz.mvc.annotation.*;

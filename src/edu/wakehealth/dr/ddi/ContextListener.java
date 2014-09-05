@@ -1,4 +1,4 @@
-package edu.wakehealth.test;
+package edu.wakehealth.dr.ddi;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -23,7 +23,7 @@ public class ContextListener extends HttpServlet implements ServletContextListen
 		System.out.println("contextInitialized");
 		// 服务初始时调用此函数
 		timer = new Timer(true);
-		timer.schedule(new MyTask(), 0, 1000 * 30);
+		timer.schedule(new MyTask(), 0, 1000 * 60);
 	}
 
 	public void destroy() {
@@ -41,7 +41,7 @@ public class ContextListener extends HttpServlet implements ServletContextListen
 
 		@Override
 		public void run() {
-			System.out.println("第" + ++i + "次执行计划任务！");
+			// System.out.println("第" + ++i + "次执行计划任务！");
 		}
 	}
 }

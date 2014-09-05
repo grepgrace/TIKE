@@ -1,4 +1,4 @@
-package edu.wakehealth.test;
+package test;
 
 public class SolrTest {
 //	public static void main(String[] args) throws Exception {

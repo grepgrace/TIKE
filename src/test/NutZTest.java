@@ -1,4 +1,4 @@
-package edu.wakehealth.test;
+package test;
 
 import java.util.Date;
 import java.util.List;
