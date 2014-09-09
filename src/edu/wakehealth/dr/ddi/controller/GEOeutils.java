@@ -13,8 +13,11 @@ import gov.nih.nlm.nls.metamap.MetaMapApi;
 import gov.nih.nlm.nls.metamap.MetaMapApiImpl;
 import gov.nih.nlm.nls.skr.GenericObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,9 +25,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Application;
 
 import org.apache.axis2.AxisFault;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
@@ -247,7 +253,7 @@ public class GEOeutils extends BaseController {
 	}
 	
 	@At()
-	public View TestgetSummaryKeys() {
+	public View TestgetSummaryKeys(HttpServletRequest request) {
 		// get random GSE, make sum(length(summary))<500,000
 		// upload sun(summary) to MetaMap to get key frequency
 		// save the result to db
@@ -255,20 +261,41 @@ public class GEOeutils extends BaseController {
 		// Analysis the result to find key
 		UTF8JsonView jsonView = new UTF8JsonView(null);
 
-		List<GEO_Data> listGeo = gEODao.getRand();
-		StringBuilder sBuilder = new StringBuilder();
-		int i = 0;
-		while ((sBuilder.toString()+(listGeo.get(i).getSummary())).length()*1.001 < 500000 && i < listGeo.size()) {
-			// sBuilder.append("\r\n" + listGeo.get(i).getId());
-			sBuilder.append(listGeo.get(i).getSummary());
-			i++;
-		}
-		System.out.println("sBuilder: " + sBuilder.toString());
-		System.out.println("sBuilder.length: " + sBuilder.toString().length());
-		String results = getMimeMapRemote(sBuilder.toString());
-		List<MimeMap> listMM = MimeMap.getList(results);
-		for (MimeMap mimeMap : listMM) {
-			basicDao.insert(mimeMap);
+		ServletContext context = request.getServletContext();
+		File dir = new File(context.getRealPath("/temp"));
+		try {
+			if (dir.exists())FileUtils.cleanDirectory(dir);
+			for (int i = 0; i < 30; i++) {
+				List<GEO_Data> listGeo = gEODao.getRand();
+				StringBuilder sBuilder = new StringBuilder();
+				int wi = 0;
+				while ((sBuilder.toString() + (listGeo.get(wi).getSummary())).length() * 1.001 < 500000
+						&& wi < listGeo.size()) {
+					sBuilder.append(listGeo.get(wi).getSummary());
+					sBuilder.append("\r\n");
+					wi++;
+				}
+				// System.out.println("sBuilder: " + sBuilder.toString());
+				// System.out.println("sBuilder.length: " +
+				// sBuilder.toString().length());
+
+				String str = dir + "/" + new Date().getTime() + ".txt";
+				Tools.writeFile(str, sBuilder.toString());
+
+				Tools.removeAllnonASCIIChars(str);
+
+//				getMimeMap(str);
+//				str = new String(Files.readAllBytes(Paths.get(str + ".out")));
+//
+//				List<MimeMap> listMM = MimeMap.getList(str);
+//				for (MimeMap mimeMap : listMM) {
+//					basicDao.insert(mimeMap);
+//				}
+
+			}
+		} catch (IOException e) {
+			println(e.toString());
+			jsonView.setData(e.getMessage());
 		}
 
 		return jsonView;
@@ -378,9 +405,9 @@ public class GEOeutils extends BaseController {
 		return setView(req, "test/MimeMap");
 	}
 
-	public static void getMimeMap() throws IOException {
+	public static void getMimeMap(String inputFile) throws IOException {
 		String dir = "C:\\Users\\kelu\\Downloads\\public_mm\\";
-		String cmd = "cmd /c " + dir + "bin\\metamap14.bat -AN " + dir + "sample.txt";
+		String cmd = "cmd /c " + dir + "bin\\metamap14.bat -N " + inputFile;
 		System.out.println(cmd);
 		// Runtime.getRuntime().exec(cmd);
 		// Execute command

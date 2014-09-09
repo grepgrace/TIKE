@@ -1,9 +1,15 @@
 package edu.wakehealth.dr.ddi.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceStub.ItemType;
 
@@ -44,6 +50,32 @@ public class Tools {
 			}
 		}
 		return sb.toString();
+	}
+
+	public static void writeFile(String filepath, String text) throws IOException {
+		// create a temporary file
+		File logFile = new File(filepath);
+		if (!logFile.getParentFile().exists())
+			logFile.getParentFile().mkdirs();
+		BufferedWriter writer = new BufferedWriter(new FileWriter(logFile));
+		writer.write(text);
+
+		// Close writer
+		writer.close();
+	}
+
+	public static String removeAllnonASCIIChars(String str) {
+		// String str = "Bj��rk����oacute�";
+		return str.replaceAll("[^\\p{ASCII}]", "");
+	}
+
+	public static void removeAllnonASCIIChars(File filepath) throws IOException {
+		Path path = Paths.get(filepath.getAbsolutePath());
+		String str = new String(Files.readAllBytes(path));
+		// String str = "Bj��rk����oacute�";
+		str = removeAllnonASCIIChars(str);
+		Tools.writeFile(filepath.getAbsolutePath(), str);
+		System.out.println("Remove all non-ASCII chars: " + filepath);
 	}
 
 }
