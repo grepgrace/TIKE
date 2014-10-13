@@ -66,7 +66,9 @@ public class Tools {
 
 	public static String removeAllnonASCIIChars(String str) {
 		// String str = "Bj��rk����oacute�";
-		return str.replaceAll("[^\\p{ASCII}]", "");
+		str = str.replaceAll("[^\\p{ASCII}]", "");
+		System.out.println("removeAllnonASCIIChars: " + str);
+		return str;
 	}
 
 	public static void removeAllnonASCIIChars(File filepath) throws IOException {

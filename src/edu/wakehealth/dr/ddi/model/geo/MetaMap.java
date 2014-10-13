@@ -7,8 +7,8 @@ import org.nutz.dao.entity.annotation.*;
 
 
 
-@Table("MimeMap")
-public class MimeMap {
+@Table("MetaMap")
+public class MetaMap {
 	@Id
 	private int Time;
 	private String Result;
@@ -27,7 +27,7 @@ public class MimeMap {
 		return ID;
 	}
 
-	public MimeMap setID(String iD) {
+	public MetaMap setID(String iD) {
 		ID = iD;
 		return this;
 	}
@@ -36,7 +36,7 @@ public class MimeMap {
 		return MM;
 	}
 
-	public MimeMap setMM(String mM) {
+	public MetaMap setMM(String mM) {
 		MM = mM;
 		return this;
 	}
@@ -45,7 +45,7 @@ public class MimeMap {
 		return Score;
 	}
 
-	public MimeMap setScore(double score) {
+	public MetaMap setScore(double score) {
 		Score = score;
 		return this;
 	}
@@ -54,7 +54,7 @@ public class MimeMap {
 		return UMLSConceptPrefer;
 	}
 
-	public MimeMap setUMLSConceptPrefer(String uMLSConceptPrefer) {
+	public MetaMap setUMLSConceptPrefer(String uMLSConceptPrefer) {
 		UMLSConceptPrefer = uMLSConceptPrefer;
 		return this;
 	}
@@ -63,7 +63,7 @@ public class MimeMap {
 		return UMLSConceptUniqu;
 	}
 
-	public MimeMap setUMLSConceptUniqu(String uMLSConceptUniqu) {
+	public MetaMap setUMLSConceptUniqu(String uMLSConceptUniqu) {
 		UMLSConceptUniqu = uMLSConceptUniqu;
 		return this;
 	}
@@ -72,7 +72,7 @@ public class MimeMap {
 		return SemanticTypeList;
 	}
 
-	public MimeMap setSemanticTypeList(String semanticTypeList) {
+	public MetaMap setSemanticTypeList(String semanticTypeList) {
 		SemanticTypeList = semanticTypeList;
 		return this;
 	}
@@ -81,7 +81,7 @@ public class MimeMap {
 		return TriggerInformation;
 	}
 
-	public MimeMap setTriggerInformation(String triggerInformation) {
+	public MetaMap setTriggerInformation(String triggerInformation) {
 		TriggerInformation = triggerInformation;
 		return this;
 	}
@@ -90,7 +90,7 @@ public class MimeMap {
 		return Location;
 	}
 
-	public MimeMap setLocation(String location) {
+	public MetaMap setLocation(String location) {
 		Location = location;
 		return this;
 	}
@@ -99,7 +99,7 @@ public class MimeMap {
 		return PositionalInformation;
 	}
 
-	public MimeMap setPositionalInformation(String positionalInformation) {
+	public MetaMap setPositionalInformation(String positionalInformation) {
 		PositionalInformation = positionalInformation;
 		return this;
 	}
@@ -108,7 +108,7 @@ public class MimeMap {
 		return Treecode;
 	}
 
-	public MimeMap setTreecode(String treecode) {
+	public MetaMap setTreecode(String treecode) {
 		Treecode = treecode;
 		return this;
 	}
@@ -117,7 +117,7 @@ public class MimeMap {
 		return Result;
 	}
 
-	public MimeMap setResult(String result) {
+	public MetaMap setResult(String result) {
 		Result = result;
 		return this;
 	}
@@ -126,13 +126,13 @@ public class MimeMap {
 		return Time;
 	}
 
-	public MimeMap setTime(int time) {
+	public MetaMap setTime(int time) {
 		Time = time;
 		return this;
 	}
 
-	public static MimeMap getInstance(String result) {
-		MimeMap map = new MimeMap();
+	public static MetaMap getInstance(String result) {
+		MetaMap map = new MetaMap();
 		if (result != null && result.split("|").length > 9) {
 			map.Result = result;
 			String[] vs = result.split("|");
@@ -150,11 +150,11 @@ public class MimeMap {
 		return map;
 	}
 
-	public static List<MimeMap> getList(String results) {
+	public static List<MetaMap> getList(String results) {
 		String[] lines = results.split("\r\n");
-		List<MimeMap> list=new ArrayList<MimeMap>();
+		List<MetaMap> list=new ArrayList<MetaMap>();
 		for (String result : lines) {
-			list.add(MimeMap.getInstance(result));
+			list.add(MetaMap.getInstance(result));
 		}
 		return list;
 	}

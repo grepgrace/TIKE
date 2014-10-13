@@ -4,7 +4,7 @@ import edu.wakehealth.dr.ddi.dao.GEODao;
 import edu.wakehealth.dr.ddi.model.Base_breast_cs;
 import edu.wakehealth.dr.ddi.model.geo.GEO_Data;
 import edu.wakehealth.dr.ddi.model.geo.GEO_Link_GDS2Key;
-import edu.wakehealth.dr.ddi.model.geo.MimeMap;
+import edu.wakehealth.dr.ddi.model.geo.MetaMap;
 import edu.wakehealth.dr.ddi.utils.Tools;
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceStub;
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceStub.*;
@@ -279,10 +279,11 @@ public class GEOeutils extends BaseController {
 				// System.out.println("sBuilder.length: " +
 				// sBuilder.toString().length());
 
-				String str = dir + "/" + new Date().getTime() + ".txt";
-				Tools.writeFile(str, sBuilder.toString());
+				String filePath = dir + "/" + new Date().getTime() + ".txt";
+				String str = Tools.removeAllnonASCIIChars(sBuilder.toString());
+				Tools.writeFile(filePath, str);
 
-				Tools.removeAllnonASCIIChars(str);
+				Tools.removeAllnonASCIIChars(filePath);
 
 //				getMimeMap(str);
 //				str = new String(Files.readAllBytes(Paths.get(str + ".out")));
@@ -486,7 +487,7 @@ public class GEOeutils extends BaseController {
 	public View TestcreateTable() {
 		UTF8JsonView jsonView = new UTF8JsonView(null);
 		try {
-			basicDao.create(MimeMap.class, false);
+			basicDao.create(MetaMap.class, false);
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonView.setData(e.getMessage());

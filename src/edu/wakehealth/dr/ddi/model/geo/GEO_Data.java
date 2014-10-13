@@ -7,7 +7,7 @@ import org.nutz.dao.entity.annotation.Table;
 //suppFile n_samples SeriesTitle PlatformTitle PlatformTaxa SamplesTaxa PubMedIds FTPLink GEO2R
 
 @Table("GEO_Data")
-public class GEO_Data {
+public class GEO_Data implements java.io.Serializable {
 	@Id(auto = false)
 	private Integer Id;
 	private String Accession;

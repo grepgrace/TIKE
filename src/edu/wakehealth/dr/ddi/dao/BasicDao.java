@@ -19,7 +19,7 @@ import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
-import edu.wakehealth.dr.ddi.model.geo.MimeMap;
+import edu.wakehealth.dr.ddi.model.geo.MetaMap;
 /**
  * 基本数据库操作类
  * @author Administrator
@@ -30,6 +30,11 @@ public class BasicDao {
 	
 	@Inject
 	protected Dao dao;
+
+	public void setDao(Dao dao) {
+		this.dao = dao;
+	}
+
 	/**
 	 * 根据Id删除数据
 	 * @param <T>
