@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7]>    <html lang="en" class="no-js ie7"> <![endif]-->

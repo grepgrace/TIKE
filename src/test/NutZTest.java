@@ -1,6 +1,5 @@
 package test;
 
-import java.nio.file.*;
 import java.util.*;
 
 import javax.sql.DataSource;
@@ -25,6 +24,8 @@ import edu.wakehealth.dr.ddi.utils.*;
 
 public class NutZTest {
 
+	static BasicDao basicDao = new BasicDao();
+
 	public static void main(String[] args) {
 
 		Mirror<GEO_Data> mirror = Mirror.me(GEO_Data.class);
@@ -45,9 +46,17 @@ public class NutZTest {
 		DataSource ds = ioc.get(DataSource.class);
 		// Dao dao = new NutDao(ds); // 如果已经定义了dao,那么改成dao = ioc.get(Dao.class);
 		Dao dao = new NutDao(ds);
-		BasicDao basicDao = new BasicDao();
 		basicDao.setDao(dao);
+
+		BatchUpdateMimeMapType();
+
+		ioc.depose(); // 关闭Ioc容器
+	}
+
+
+	private static void BatchUpdateMimeMapType() {
 		Condition cd = Cnd.where("UMLSConceptPrefer", "=", "Tumor cells, uncertain whether benign or malignant");
+		// test Condition when next line commented
 		cd = Cnd.where("1", "=", "1");
 		List<MetaMapGroup> list = basicDao.search(MetaMapGroup.class, cd);
 		System.out.println(list.size());
@@ -77,7 +86,5 @@ public class NutZTest {
 			}
 			System.out.println(log);
 		}
-
-		ioc.depose(); // 关闭Ioc容器
 	}
 }

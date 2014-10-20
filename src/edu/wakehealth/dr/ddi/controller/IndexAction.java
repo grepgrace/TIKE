@@ -27,19 +27,30 @@ public class IndexAction extends BaseController {
 
 	@At("/index")
 	@GET
-	public View indexGet(HttpServletRequest req, String checkbox, String name,Integer step,String submit) {
-		if(step==null)step=1;
-		if("previous".equals(submit)) step = step>4?4:step-1;
-		else if("next".equals(submit)) step = step+1;
-		
+	public View indexGet(HttpServletRequest req) {
+		return new JspView("jsp.home");
+	}
+
+	@At("/index1")
+	@GET
+	public View index1Get(HttpServletRequest req, String checkbox, String name, Integer step,
+			String submit) {
+		if (step == null)
+			step = 1;
+		if ("previous".equals(submit))
+			step = step > 4 ? 4 : step - 1;
+		else if ("next".equals(submit))
+			step = step + 1;
+
 		index(req, checkbox, name, step);
 
 		return setView(req, "index");
 	}
 
-	@At("/index")
+	@At("/index1")
 	@POST
-	public View indexPost(HttpServletRequest req, String checkbox, String name,Integer step,String submit) {
+	public View index1Post(HttpServletRequest req, String checkbox, String name, Integer step,
+			String submit) {
 		if(step==null)step=0;
 		if("previous".equals(submit)) step = step>4?4:step-1;
 		else if("next".equals(submit)) step = step+1;
