@@ -17,40 +17,23 @@ import org.nutz.mvc.view.JspView;
 
 @IocBean
 @InjectName
-public class IndexAction extends BaseController {
+public class Test extends BaseController {
 
-	@At("/")
+	@At("/test")
 	@GET
-	@Ok("redirect:/index")
-	public void index(HttpServletRequest req) {
-	}
-
-	@At("/index")
-	@GET
-	public View indexGet(HttpServletRequest req) {
-		return new JspView("jsp.home");
-	}
-
-	@At("/index1")
-	@GET
-	public View index1Get(HttpServletRequest req, String checkbox, String name, Integer step,
-			String submit) {
-		if (step == null)
-			step = 1;
-		if ("previous".equals(submit))
-			step = step > 4 ? 4 : step - 1;
-		else if ("next".equals(submit))
-			step = step + 1;
+	public View index1Get(HttpServletRequest req, String checkbox, String name, Integer step, String submit) {
+		if (step == null)step = 1;
+		if ("previous".equals(submit))step = step > 4 ? 4 : step - 1;
+		else if ("next".equals(submit))step = step + 1;
 
 		index(req, checkbox, name, step);
 
-		return setView(req, "index");
+		return setView(req, "test/index");
 	}
 
-	@At("/index1")
+	@At("/test")
 	@POST
-	public View index1Post(HttpServletRequest req, String checkbox, String name, Integer step,
-			String submit) {
+	public View index1Post(HttpServletRequest req, String checkbox, String name, Integer step, String submit) {
 		if(step==null)step=0;
 		if("previous".equals(submit)) step = step>4?4:step-1;
 		else if("next".equals(submit)) step = step+1;
@@ -63,9 +46,9 @@ public class IndexAction extends BaseController {
 			list.add("b");
 			list.add("c");
 			req.setAttribute("results", list);
-			return setView(req, "result");
+			return setView(req, "test/result");
 		}
-		return new JspView("jsp.index");
+		return setView(req, "test/index");
 	}
 	
 	void index(HttpServletRequest req, String checkbox, String name, Integer step) {
