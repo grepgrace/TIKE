@@ -22,6 +22,7 @@ public class MetaMap {
 	private String Location;
 	private String PositionalInformation;
 	private String Treecode;
+	private String LocText;
 
 	public String getID() {
 		return ID;
@@ -157,6 +158,15 @@ public class MetaMap {
 			list.add(MetaMap.getInstance(result));
 		}
 		return list;
+	}
+
+	public String getLocText() {
+		return LocText;
+	}
+
+	public MetaMap setLocText(String locText) {
+		LocText = locText;
+		return this;
 	}
 
 }

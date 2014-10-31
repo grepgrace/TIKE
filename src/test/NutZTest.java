@@ -24,35 +24,68 @@ import edu.wakehealth.dr.ddi.utils.*;
 
 public class NutZTest {
 
-	static BasicDao basicDao = new BasicDao();
+	public static BasicDao basicDao = new BasicDao();
 
-	public static void main(String[] args) {
-
-		Mirror<GEO_Data> mirror = Mirror.me(GEO_Data.class);
-		GEO_Data geo = new GEO_Data();
-		mirror.setValue(geo, "setAccession", "Accession");
-		System.out.println(geo.getAccession());
-
-		double num = 10 / (double) 3.0;
-		System.out.println(num);
-		System.out.println(Math.ceil(10 / (double) 3));
-		System.out.println(Math.ceil(num));
-		System.out.println(Math.ceil(3.33333333));
-		
-		System.out.println(Tools.toString(new String[] { "a", "b", "c" }, ";"));
-
-
+	public static void setDao() {
 		Ioc ioc = new NutIoc(new JsonLoader("conf/datasource.js"));
 		DataSource ds = ioc.get(DataSource.class);
 		// Dao dao = new NutDao(ds); // 如果已经定义了dao,那么改成dao = ioc.get(Dao.class);
 		Dao dao = new NutDao(ds);
 		basicDao.setDao(dao);
 
-		BatchUpdateMimeMapType();
-
-		ioc.depose(); // 关闭Ioc容器
+		// ioc.depose(); // 关闭Ioc容器
 	}
 
+	public static void main(String[] args) throws Exception {
+
+//		Mirror<GEO_Data> mirror = Mirror.me(GEO_Data.class);
+//		GEO_Data geo = new GEO_Data();
+//		mirror.setValue(geo, "setAccession", "Accession");
+//		System.out.println(geo.getAccession());
+//
+//		double num = 10 / (double) 3.0;
+//		System.out.println(num);
+//		System.out.println(Math.ceil(10 / (double) 3));
+//		System.out.println(Math.ceil(num));
+//		System.out.println(Math.ceil(3.33333333));
+//		
+//		System.out.println(Tools.toString(new String[] { "a", "b", "c" }, ";"));
+
+
+		// BatchUpdateMimeMapType();
+		setDao();
+		batchUpdatemateMapLocText();
+
+	}
+
+
+	private static void batchUpdatemateMapLocText() {
+		Condition cd = Cnd.where("UMLSConceptPrefer", "=", "Abdominal Cavity");
+		// test Condition when next line commented
+		// cd = Cnd.where("1", "=", "1");
+		List<MetaMap> list = basicDao.search(MetaMap.class, cd);
+		System.out.println(list.size());
+
+		for (int i = 0; i < list.size(); i++) {
+			MetaMap map = list.get(i);
+			String ti = map.getTriggerInformation();
+			if (ti == null || ti.trim() == ""
+					||ti.indexOf("[")==-1||ti.indexOf("]")==-1||ti.indexOf("-")==-1)
+				continue;
+			ti = ti.substring(1, ti.length() - 1);
+			String[] ts = ti.split(",");
+			for (int j = 0; j < ts.length; j++) {
+				String text = ti.split("-")[0];
+				System.out.println(text);
+				ts[0] = text.substring(1, text.length() - 1);
+			}
+			ti = Arrays.toString(ts);
+			ti = ti.substring(1, ti.length() - 1);
+			map.setLocText(ti);
+			System.out.println(map.getLocText());
+			// basicDao.update(map);
+		}
+	}
 
 	private static void BatchUpdateMimeMapType() {
 		Condition cd = Cnd.where("UMLSConceptPrefer", "=", "Tumor cells, uncertain whether benign or malignant");

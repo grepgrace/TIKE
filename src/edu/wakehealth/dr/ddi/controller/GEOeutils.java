@@ -27,7 +27,6 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Application;
 
 import org.apache.axis2.AxisFault;
 import org.apache.commons.io.FileUtils;

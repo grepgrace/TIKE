@@ -7,10 +7,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.neo4j.graphdb.Node;
+import org.nutz.lang.Mirror;
+
+import edu.wakehealth.dr.ddi.model.geo.GEO_Data;
+import edu.wakehealth.dr.ddi.model.geo.MetaMapGroup;
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceStub.ItemType;
 
 public class Tools {
@@ -78,6 +85,15 @@ public class Tools {
 		str = removeAllnonASCIIChars(str);
 		Tools.writeFile(filepath.getAbsolutePath(), str);
 		System.out.println("Remove all non-ASCII chars: " + filepath);
+	}
+
+	public static <T> void setProperty(Node node1, T t) {
+		Mirror<T> mirror = Mirror.me(t);
+		Field[] fields = mirror.getFields();
+		for (Field field : fields) {
+			node1.setProperty(field.getName(), mirror.getValue(t, field.getName()));
+			//System.out.println(field.getName() + ":" + mirror.getValue(t, field.getName()));
+		}
 	}
 
 }
