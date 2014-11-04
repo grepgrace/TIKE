@@ -11,6 +11,7 @@ import org.nutz.dao.entity.annotation.*;
 public class MetaMap {
 	@Id
 	private int Time;
+	@Readonly
 	private String Result;
 	private String ID;
 	private String MM;
@@ -23,6 +24,7 @@ public class MetaMap {
 	private String PositionalInformation;
 	private String Treecode;
 	private String LocText;
+	private int GEOId;
 
 	public String getID() {
 		return ID;
@@ -133,10 +135,12 @@ public class MetaMap {
 	}
 
 	public static MetaMap getInstance(String result) {
-		MetaMap map = new MetaMap();
-		if (result != null && result.split("|").length > 9) {
+		if (!(result != null && result.indexOf("|") > -1 && result.split("\\|").length > 9))
+			return null;
+		else {
+			MetaMap map = new MetaMap();
 			map.Result = result;
-			String[] vs = result.split("|");
+			String[] vs = result.split("\\|");
 			map.ID = vs[0];
 			map.MM = vs[1];
 			map.Score = Double.valueOf(vs[2]);
@@ -147,15 +151,19 @@ public class MetaMap {
 			map.Location = vs[7];
 			map.PositionalInformation = vs[8];
 			map.Treecode = vs[9];
+			return map;
 		}
-		return map;
 	}
 
 	public static List<MetaMap> getList(String results) {
 		String[] lines = results.split("\r\n");
 		List<MetaMap> list=new ArrayList<MetaMap>();
 		for (String result : lines) {
-			list.add(MetaMap.getInstance(result));
+			if (!(result != null && result.indexOf("|") > -1 && result.split("\\|").length >= 8))
+				continue;
+			MetaMap map = MetaMap.getInstance(result);
+			if (map != null)
+				list.add(map);
 		}
 		return list;
 	}
@@ -166,6 +174,15 @@ public class MetaMap {
 
 	public MetaMap setLocText(String locText) {
 		LocText = locText;
+		return this;
+	}
+
+	public int getGEOId() {
+		return GEOId;
+	}
+
+	public MetaMap setGEOId(int gEOId) {
+		GEOId = gEOId;
 		return this;
 	}
 

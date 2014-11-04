@@ -43,9 +43,25 @@ import java.nio.file.Paths;
 
 import edu.wakehealth.dr.ddi.utils.Tools;
 
-public class NonAsciiString {
+public class ToolsTest {
 
 	public static void main(String a[]) throws IOException {
+//		Mirror<GEO_Data> mirror = Mirror.me(GEO_Data.class);
+//		GEO_Data geo = new GEO_Data();
+//		mirror.setValue(geo, "setAccession", "Accession");
+//		System.out.println(geo.getAccession());
+//
+//		double num = 10 / (double) 3.0;
+//		System.out.println(num);
+//		System.out.println(Math.ceil(10 / (double) 3));
+//		System.out.println(Math.ceil(num));
+//		System.out.println(Math.ceil(3.33333333));
+//		
+//		System.out.println(Tools.toString(new String[] { "a", "b", "c" }, ";"));
+
+}
+
+	public static void removeAllnonASCIIChars() {
 		// String dir = "C:\\Users\\kelu\\Downloads\\public_mm\\";
 		// Tools.removeAllnonASCIIChars(dir + "allsummarys.txt");
 

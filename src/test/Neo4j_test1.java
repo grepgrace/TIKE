@@ -1,19 +1,29 @@
 package test;
 
+import java.util.Iterator;
+
+import org.neo4j.cypher.javacompat.ExecutionEngine;
+import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 
 public class Neo4j_test1 {
 
-	String DB_PATH = "H:/Documents/Neo4j/music.db";
+	static String DB_PATH = "C:/Users/kelu/Documents/Neo4j/music1.db";
 
 	private static enum RelationshipTypes implements RelationshipType {
 		PUBLISH, // 出版 歌手出版专辑
@@ -194,13 +204,130 @@ public class Neo4j_test1 {
 	}
 
 	public static void main(String[] args) {
-		new Neo4j_test1().useNodeAndRelationship();
-		new Neo4j_test1().useIndex();
-		new Neo4j_test1().useNodeAndRelationshipAndIndex();
+		// new Neo4j_test1().useNodeAndRelationship();
+		// new Neo4j_test1().useIndex();
+		// new Neo4j_test1().useNodeAndRelationshipAndIndex();
+
+		t6();
 	}
 
 	public void info(Object obj) {
 		System.out.println(obj.toString());
 	}
 
+	// public static String DB_PATH = "http://127.0.0.1:7474";
+	private static ThreadLocal<GraphDatabaseService> tl = new ThreadLocal<GraphDatabaseService>();
+
+	public static GraphDatabaseService getConnect() {
+		GraphDatabaseService graphDb;
+		synchronized (tl) {
+			if (tl.get() == null) {
+				graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(DB_PATH);
+				registerShutdownHook(graphDb);
+				tl.set(graphDb);
+			} else {
+				graphDb = tl.get();
+			}
+		}
+		return graphDb;
+	}
+
+	static void registerShutdownHook(final GraphDatabaseService graphDb) {
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				graphDb.shutdown();
+			}
+		});
+	}
+
+	static void t1() {
+		GraphDatabaseService db = getConnect();
+		Transaction tx = db.beginTx();
+
+		try {
+			Node n1 = db.createNode();
+			n1.setProperty("name", "n1");
+			n1.setProperty("value", "v1");
+
+			Node n2 = db.createNode();
+			n2.setProperty("name", "n2");
+			n2.setProperty("value", "v2");
+			n2.setProperty("desc", "desc2");
+
+			RelationshipType rt = DynamicRelationshipType.withName("relat1");
+			Relationship rela = n1.createRelationshipTo(n2, rt); // RelTypes.KNOWS
+			rela.setProperty("name", "rela1");
+
+			tx.success();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			tx.failure();
+		} finally {
+			tx.close();
+		}
+	}
+
+	static void t2() {
+		GraphDatabaseService db = getConnect();
+		Transaction tx = db.beginTx();
+
+		try {
+			// NodesFunction nn = new NodesFunction(nn);
+			Iterable<Node> nodes = db.getAllNodes();
+			for (Node n : nodes) {
+				System.out.println(n.getProperty("name"));
+			}
+
+			tx.success();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			tx.failure();
+		} finally {
+			tx.close();
+		}
+	}
+
+	static void t5() {
+		GraphDatabaseService db = getConnect();
+		Transaction tx = db.beginTx();
+		try {
+			ExecutionEngine engine = new ExecutionEngine(db);
+			String query = "START n=node(*) RETURN n,n.name";
+			ExecutionResult rs = engine.execute(query);
+			ResourceIterator<Node> riter = rs.columnAs("n");
+			while (riter.hasNext()) {
+				Node n = riter.next();
+				// n.setProperty("desc", "desc222222");
+				// Iterable<String>ps = n.getPropertyKeys();
+				Iterator<String> piter = n.getPropertyKeys().iterator();
+				while (piter.hasNext()) {
+					String key = piter.next();
+					System.out.println(key + ":" + n.getProperty(key));
+				}
+				// n.setProperty("desc", "desc21");
+			}
+			tx.success();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			tx.failure();
+		}
+		tx.close();
+		db.shutdown();
+	}
+
+	static void t6() {
+		GraphDatabaseService db = getConnect();
+		Transaction tx = db.beginTx();
+
+		try {
+			String sql = "START n=node(1) SET n.desc='desc0000' ";
+			ExecutionEngine engine = new ExecutionEngine(db);
+			engine.execute(sql);
+
+			tx.success();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			tx.failure();
+		}
+	}
 }

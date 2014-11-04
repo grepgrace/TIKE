@@ -414,7 +414,7 @@ public class GEOeutils extends BaseController {
 		Process child = Runtime.getRuntime().exec(cmd);
 
 		InputStream in = child.getInputStream();
-		System.out.println(Tools.getString(in));
+		System.out.println(Tools.toString(in));
 	}
 
 	// Fielded MetaMap Indexing (MMI) Output, XML Output, and Human Readable

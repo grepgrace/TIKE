@@ -24,10 +24,11 @@ import edu.wakehealth.dr.ddi.utils.*;
 
 public class NutZTest {
 
-	public static BasicDao basicDao = new BasicDao();
+	public static BasicDao basicDao = null;
+	static Ioc ioc = new NutIoc(new JsonLoader("conf/datasource.js"));
 
 	public static void setDao() {
-		Ioc ioc = new NutIoc(new JsonLoader("conf/datasource.js"));
+		basicDao = new BasicDao();
 		DataSource ds = ioc.get(DataSource.class);
 		// Dao dao = new NutDao(ds); // 如果已经定义了dao,那么改成dao = ioc.get(Dao.class);
 		Dao dao = new NutDao(ds);
@@ -36,22 +37,12 @@ public class NutZTest {
 		// ioc.depose(); // 关闭Ioc容器
 	}
 
+	public static void closeDao() {
+		if (basicDao != null)
+			ioc.depose(); // 关闭Ioc容器
+	}
+
 	public static void main(String[] args) throws Exception {
-
-//		Mirror<GEO_Data> mirror = Mirror.me(GEO_Data.class);
-//		GEO_Data geo = new GEO_Data();
-//		mirror.setValue(geo, "setAccession", "Accession");
-//		System.out.println(geo.getAccession());
-//
-//		double num = 10 / (double) 3.0;
-//		System.out.println(num);
-//		System.out.println(Math.ceil(10 / (double) 3));
-//		System.out.println(Math.ceil(num));
-//		System.out.println(Math.ceil(3.33333333));
-//		
-//		System.out.println(Tools.toString(new String[] { "a", "b", "c" }, ";"));
-
-
 		// BatchUpdateMimeMapType();
 		setDao();
 		batchUpdatemateMapLocText();
