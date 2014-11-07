@@ -59,6 +59,11 @@ public class ToolsTest {
 //		
 //		System.out.println(Tools.toString(new String[] { "a", "b", "c" }, ";"));
 
+		System.out.println(Math.floor(7 / 4));
+		System.out.println(Math.floor(3.60));
+		System.out.println(7 / 4);
+		System.out.println(Math.ceil(7 / 4));
+		System.out.println(Math.ceil(3.60));
 }
 
 	public static void removeAllnonASCIIChars() {

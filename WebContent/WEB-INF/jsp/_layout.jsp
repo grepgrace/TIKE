@@ -29,7 +29,7 @@
 <script src="/patric/js/patric.min.js"></script>
 <script src="/portal-core/layouts/patric/modal.min.js"></script>
 </head>
-<body class="normal home">
+<body class="normal ${bodyClass}">
 	<div id="login-modal" style="display: none">
 		<div id="login-modal-msg" style="display: none; width: 255px; height: 109px">
 			<div id="loginIframe" class="login-content"></div>
@@ -39,7 +39,7 @@
 	<div class="main-header no-underline-links">
 		<div class="masthead">
 			<div class="wrapper">
-				<a class="logo" title="Translational Integrated Knowledge Environment" href="/portal/portal/patric/Home">TIKE Home</a>
+				<a class="logo" title="Translational Integrated Knowledge Environment" href="/">TIKE Home</a>
 				<ul class="main-nav no-decoration">
 					<li class="first active"><a class="home active"
 						href="/portal/portal/patric/Home">Home</a>

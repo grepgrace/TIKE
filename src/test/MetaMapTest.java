@@ -1,39 +1,73 @@
 package test;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Date;
 import java.util.List;
 
-import org.neo4j.graphdb.Node;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
-import org.nutz.lang.Dumps;
 
 import edu.wakehealth.dr.ddi.model.geo.GEO_Data;
 import edu.wakehealth.dr.ddi.model.geo.MetaMap;
 import edu.wakehealth.dr.ddi.utils.Tools;
-import gov.nih.nlm.nls.metamap.AcronymsAbbrevs;
-import gov.nih.nlm.nls.metamap.MetaMapApi;
-import gov.nih.nlm.nls.metamap.MetaMapApiImpl;
 
 public class MetaMapTest extends NutZTest {
 
-	public static void main(String[] args) throws IOException {
-		setDao();
+	static long startTime = System.currentTimeMillis(); // 获取开始时间
+	static long endTime = System.currentTimeMillis(); // 获取结束时间
+	
+	static Integer threadFinishedNum = -1;
+	static int count = 0;
+	static int threadNum = 40;
+	static List<GEO_Data> list = null;
 
-		Condition cd = Cnd.where("1", "=", "1");
-		// cd = Cnd.wrap(" Id in (88, 360, 483, 806, 807, 817, 820)");
-		List<GEO_Data> list = basicDao.search(GEO_Data.class, cd);
-		// System.out.println("list.size:" + list.size());
-		for (int i = 0; i < list.size(); i++) {
+	public static void main(String[] args) {
+		setDao();
+		if (list == null) {// 6430
+			Condition cd = Cnd.wrap("1=1");
+			// cd = Cnd.wrap(" Id in (88, 360, 483, 806, 807, 817, 820)");
+			list = basicDao.search(GEO_Data.class, cd);
+			count = (int) Math.ceil((list.size() / (double) threadNum)); // 10/3=4
+			System.out.println(" list.size:" + list.size() + " count:" + count);
+		}
+		if (threadNum > list.size())
+			threadNum = list.size();
+		for (int i = 0; i <= threadNum; i++) {
+			new Thread(i + "") {
+				public void run() {
+					int index = Integer.valueOf(getName());
+					System.err.println("thread " + index + "/" + threadNum + " start()");
+					try {
+						batchUpdateGeoMetaMap(index);
+					} catch (IOException e) {
+						System.err.println(index + "" + e.getMessage());
+						e.printStackTrace();
+					}
+					synchronized (threadFinishedNum) {
+						threadFinishedNum = threadFinishedNum + 1;
+						if (threadFinishedNum.equals(threadNum)) {// all thread finished
+							closeDao();
+							endTime = System.currentTimeMillis(); // 获取结束时间
+							System.out.println("程序运行时间： " + (endTime - startTime) + " ms");
+						}
+					}
+					System.err.println("thread " + index + "/" + threadNum + " end()");
+				}
+			}.start();
+		}
+	}
+
+	public static void batchUpdateGeoMetaMap(int index) throws IOException {
+		int startIndex = count * (index);
+		int endIndex = startIndex + count;
+		if (endIndex >= list.size())
+			endIndex = list.size();
+		for (int i = startIndex; i < endIndex; i++) {
 			GEO_Data geo = list.get(i);
-			System.out.println("\r\n" + (i + 1) + "/" + list.size() + " " + geo.getId());
+			System.err.println("thread " + index + " " + (i + 1) + "/" + list.size() + " "
+					+ geo.getId() + " " + startIndex + "-" + endIndex);
 			String ids = ""; // like 'C1513882','C0007600'
 			if (geo.getSummary() == null)
-				return;
+				continue;
 			String text = geo.getSummary().toString();
 			String filepath = Tools.dir + "tmp\\geo" + geo.getId() + ".txt";
 			if (!text.endsWith("\r\n"))
@@ -46,41 +80,6 @@ public class MetaMapTest extends NutZTest {
 				basicDao.insert(map);
 			}
 		}
-
-		closeDao();
-
-		// getMimeMapLocal("This SuperSeries is composed of the SubSeries listed below");
-		
-	}
-
-	public static String getMimeMapLocal(String terms) {
-		MetaMapApi api = new MetaMapApiImpl();
-		api.setHost("127.0.0.1");
-		api.setPort(8066);
-		api.setOptions("-AN -V USAbase");
-		List<gov.nih.nlm.nls.metamap.Result> resultList = api.processCitationsFromString(terms);
-		for (int i = 0; i < resultList.size(); i++) {
-			gov.nih.nlm.nls.metamap.Result result = resultList.get(i);
-			System.out.println(result.toString());
-			List<AcronymsAbbrevs> aaList;
-			try {
-				aaList = result.getAcronymsAbbrevs();
-				if (aaList.size() > 0) {
-					System.out.println("Acronyms and Abbreviations:");
-					for (AcronymsAbbrevs e : aaList) {
-						System.out.println("Acronym: " + e.getAcronym());
-						System.out.println("Expansion: " + e.getExpansion());
-						System.out.println("Count list: " + e.getCountList());
-						System.out.println("CUI list: " + e.getCUIList());
-					}
-				} else {
-					System.out.println(" None. aaList.size() == 0");
-				}
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		}
-		return "";
 	}
 
 

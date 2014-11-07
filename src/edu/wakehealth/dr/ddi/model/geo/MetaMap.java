@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.nutz.dao.entity.annotation.*;
 
+import edu.wakehealth.dr.ddi.utils.Tools;
+
 
 
 @Table("MetaMap")
@@ -15,7 +17,8 @@ public class MetaMap {
 	private String Result;
 	private String ID;
 	private String MM;
-	private double Score;
+	private String Score;
+	private double ScoreValue;
 	private String UMLSConceptPrefer;
 	private String UMLSConceptUniqu;
 	private String SemanticTypeList;
@@ -44,11 +47,11 @@ public class MetaMap {
 		return this;
 	}
 
-	public double getScore() {
+	public String getScore() {
 		return Score;
 	}
 
-	public MetaMap setScore(double score) {
+	public MetaMap setScore(String score) {
 		Score = score;
 		return this;
 	}
@@ -135,7 +138,7 @@ public class MetaMap {
 	}
 
 	public static MetaMap getInstance(String result) {
-		if (!(result != null && result.indexOf("|") > -1 && result.split("\\|").length > 9))
+		if (!(result != null && result.indexOf("|") > -1 && result.split("\\|").length >= 8))
 			return null;
 		else {
 			MetaMap map = new MetaMap();
@@ -143,13 +146,17 @@ public class MetaMap {
 			String[] vs = result.split("\\|");
 			map.ID = vs[0];
 			map.MM = vs[1];
-			map.Score = Double.valueOf(vs[2]);
+			map.Score = vs[2];
+			if (Tools.isDouble(map.Score))
+				map.ScoreValue = Double.valueOf(vs[2]);
 			map.UMLSConceptPrefer = vs[3];
 			map.UMLSConceptUniqu = vs[4];
 			map.SemanticTypeList = vs[5];
 			map.TriggerInformation = vs[6];
 			map.Location = vs[7];
-			map.PositionalInformation = vs[8];
+			if (vs.length > 8)
+				map.PositionalInformation = vs[8];
+			if (vs.length > 9)
 			map.Treecode = vs[9];
 			return map;
 		}
@@ -183,6 +190,15 @@ public class MetaMap {
 
 	public MetaMap setGEOId(int gEOId) {
 		GEOId = gEOId;
+		return this;
+	}
+
+	public double getScoreValue() {
+		return ScoreValue;
+	}
+
+	public MetaMap setScoreValue(double scoreValue) {
+		ScoreValue = scoreValue;
 		return this;
 	}
 

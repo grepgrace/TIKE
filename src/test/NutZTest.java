@@ -28,12 +28,13 @@ public class NutZTest {
 	static Ioc ioc = new NutIoc(new JsonLoader("conf/datasource.js"));
 
 	public static void setDao() {
-		basicDao = new BasicDao();
-		DataSource ds = ioc.get(DataSource.class);
-		// Dao dao = new NutDao(ds); // 如果已经定义了dao,那么改成dao = ioc.get(Dao.class);
-		Dao dao = new NutDao(ds);
-		basicDao.setDao(dao);
-
+		if (basicDao == null) {
+			basicDao = new BasicDao();
+			DataSource ds = ioc.get(DataSource.class);
+			// Dao dao = new NutDao(ds); // 如果已经定义了dao,那么改成dao = ioc.get(Dao.class);
+			Dao dao = new NutDao(ds);
+			basicDao.setDao(dao);
+		}
 		// ioc.depose(); // 关闭Ioc容器
 	}
 

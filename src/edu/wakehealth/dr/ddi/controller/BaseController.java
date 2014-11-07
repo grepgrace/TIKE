@@ -15,6 +15,7 @@ import org.nutz.mvc.View;
 import org.nutz.mvc.view.JspView;
 
 import edu.wakehealth.dr.ddi.dao.BasicDao;
+import edu.wakehealth.dr.ddi.dao.Neo4jDao;
 
 
 @IocBean
@@ -22,7 +23,9 @@ public class BaseController {
 
 	@Inject
 	protected BasicDao basicDao;
-	
+	protected Neo4jDao neo4jDap = new Neo4jDao();
+	protected String bodyClass = "home";
+
 	public void setBasicDao(BasicDao basicDao) {
 		this.basicDao = basicDao;
 	}
@@ -42,6 +45,7 @@ public class BaseController {
 	}
 
 	protected View setView(HttpServletRequest req, String page) {
+		req.setAttribute("bodyClass", bodyClass);
 		req.setAttribute("view", page);
 		return new JspView("jsp._layout");
 	}

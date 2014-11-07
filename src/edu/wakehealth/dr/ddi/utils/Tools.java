@@ -147,4 +147,17 @@ public class Tools {
 		}
 	}
 
+	public static void println(String string) {
+		System.out.println(toString(new Date(), "yyyy-MM-dd HH:mm:ss:SSSS") + " " + string);
+	}
+
+	public static boolean isDouble(String str) {
+		try {
+			Double.parseDouble(str);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
 }
