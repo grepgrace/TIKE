@@ -21,7 +21,7 @@ import edu.wakehealth.dr.ddi.dao.Neo4jDao;
 @IocBean
 public class BaseController {
 
-	@Inject
+	// @Inject
 	protected BasicDao basicDao;
 	protected Neo4jDao neo4jDap = new Neo4jDao();
 	protected String bodyClass = "home";
