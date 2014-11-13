@@ -27,9 +27,9 @@
     <error-code>500</error-code>
     <location>/500.jsp</location>
   </error-page>
-  <listener>
+  <!-- <listener>
     <listener-class>
 	    edu.wakehealth.dr.ddi.ContextListener
 	  </listener-class>
-  </listener>
+  </listener> -->
 </web-app>
