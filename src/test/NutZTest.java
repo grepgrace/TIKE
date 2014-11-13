@@ -17,10 +17,11 @@ import org.nutz.ioc.impl.*;
 import org.nutz.ioc.loader.json.JsonLoader;
 import org.nutz.lang.Mirror;
 
+import com.tike.dao.*;
+import com.tike.model.geo.*;
+import com.tike.utils.*;
+
 import abner.Tagger;
-import edu.wakehealth.dr.ddi.dao.*;
-import edu.wakehealth.dr.ddi.model.geo.*;
-import edu.wakehealth.dr.ddi.utils.*;
 
 public class NutZTest {
 

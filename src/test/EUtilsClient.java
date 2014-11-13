@@ -4,7 +4,8 @@ import java.util.Map;
 
 import org.nutz.castor.Castors;
 
-import edu.wakehealth.dr.ddi.utils.Tools;
+import com.tike.utils.Tools;
+
 import gov.nih.nlm.ncbi.www.soap.eutils.EFetchTaxonServiceStub.*;
 import gov.nih.nlm.ncbi.www.soap.eutils.*;
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceStub.*;

@@ -5,7 +5,7 @@
     <filter-class>org.nutz.mvc.NutFilter</filter-class>
     <init-param>
       <param-name>modules</param-name>
-      <param-value>edu.wakehealth.dr.ddi.MainModule</param-value>
+      <param-value>com.tike.MainModule</param-value>
     </init-param>
     <init-param>
       <param-name>ignore</param-name>
@@ -29,7 +29,7 @@
   </error-page>
   <!-- <listener>
     <listener-class>
-	    edu.wakehealth.dr.ddi.ContextListener
+	    com.tike.ContextListener
 	  </listener-class>
   </listener> -->
 </web-app>

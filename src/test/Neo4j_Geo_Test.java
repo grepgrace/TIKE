@@ -6,9 +6,9 @@ import org.neo4j.graphdb.*;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 
-import edu.wakehealth.dr.ddi.dao.Neo4jDao;
-import edu.wakehealth.dr.ddi.model.geo.*;
-import edu.wakehealth.dr.ddi.utils.Tools;
+import com.tike.dao.Neo4jDao;
+import com.tike.model.geo.*;
+import com.tike.utils.Tools;
 
 public class Neo4j_Geo_Test extends NutZTest {
 	protected static Neo4jDao neo4jDap = new Neo4jDao();

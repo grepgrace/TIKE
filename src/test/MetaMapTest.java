@@ -6,9 +6,9 @@ import java.util.List;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Condition;
 
-import edu.wakehealth.dr.ddi.model.geo.GEO_Data;
-import edu.wakehealth.dr.ddi.model.geo.MetaMap;
-import edu.wakehealth.dr.ddi.utils.Tools;
+import com.tike.model.geo.GEO_Data;
+import com.tike.model.geo.MetaMap;
+import com.tike.utils.Tools;
 
 public class MetaMapTest {
 

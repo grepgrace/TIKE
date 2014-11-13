@@ -41,7 +41,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import edu.wakehealth.dr.ddi.utils.Tools;
+import com.tike.utils.Tools;
 
 public class ToolsTest {
 
