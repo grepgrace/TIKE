@@ -261,8 +261,8 @@ public class GEOeutils extends BaseController {
 		// Analysis the result to find key
 		UTF8JsonView jsonView = new UTF8JsonView(null);
 
-		ServletContext context = request.getServletContext();
-		File dir = new File(context.getRealPath("/temp"));
+		String context = request.getRealPath("/");
+		File dir = new File(context + ("/temp"));
 		try {
 			if (dir.exists())FileUtils.cleanDirectory(dir);
 			for (int i = 0; i < 30; i++) {

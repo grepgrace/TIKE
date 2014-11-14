@@ -1,5 +1,6 @@
 package com.tike.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,16 @@ import org.nutz.mvc.view.JspView;
 @IocBean
 @InjectName
 public class Test extends BaseController {
+
+	@At("/tike")
+	@GET
+	public View indexTike(HttpServletRequest request) {
+		String context = request.getServletPath();
+		context = request.getRealPath("/");
+		File dir = new File(context + ("/temp"));
+		System.out.println(dir.getAbsolutePath());
+		return setView(request, "test/index");
+	}
 
 	@At("/test")
 	@GET
