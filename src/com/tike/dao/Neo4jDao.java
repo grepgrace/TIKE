@@ -12,9 +12,9 @@ import org.neo4j.rest.graphdb.query.RestCypherQueryEngine;
 import org.neo4j.rest.graphdb.util.ConvertedResult;
 
 public class Neo4jDao {
-	static String DB_PATH = "C:/Users/kelu/Documents/Neo4j/tike.db";
-	public static GraphDatabaseService db;
-	static RestGraphDatabase gd = new RestGraphDatabase(DB_PATH);
+	// static String DB_PATH = "C:/Users/kelu/Documents/Neo4j/tike.db";
+	static String DB_PATH = "http://localhost:7474/db/data";
+	public static GraphDatabaseService db = new RestGraphDatabase(DB_PATH);
 
 	public final static Label labelGeo = DynamicLabel.label("geo");
 	public final static Label labelMetaMap = DynamicLabel.label("metamap");
@@ -23,14 +23,14 @@ public class Neo4jDao {
 		KNOWS, Has, Is
 	}
 
-	public Neo4jDao() {
-		try {
-			db = new GraphDatabaseFactory().newEmbeddedDatabase(DB_PATH);
-		} catch (Exception e) {
-			DB_PATH = "http://localhost:7474/db/data";
-			db = new RestGraphDatabase(DB_PATH);
-		}
-	}
+	// public Neo4jDao() {
+	// try {
+	// db = new GraphDatabaseFactory().newEmbeddedDatabase(DB_PATH);
+	// } catch (Exception e) {
+	// DB_PATH = DB_PATH_URL;
+	// db = new RestGraphDatabase(DB_PATH);
+	// }
+	// }
 
 	public Node getNode(Label paramLabel, String paramString, Object paramObject) {
 		List<Node> list = new ArrayList<>();

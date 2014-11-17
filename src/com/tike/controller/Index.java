@@ -26,9 +26,16 @@ public class Index extends BaseController {
 
 	@At("/")
 	@GET
-	public View index(HttpServletRequest req) {
+	public View indexGet(HttpServletRequest req) {
 		return setView(req, "index");
 	}
+
+	@At("/")
+	@POST
+	public View indexPOST(HttpServletRequest req) {
+		return setView(req, "index");
+	}
+
 
 	// /post?global_search_keyword=aaa
 	@At("/GenomicFeatureWindow")
