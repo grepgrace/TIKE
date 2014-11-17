@@ -9,7 +9,7 @@
 <html class="no-js" lang="en">
 <!--<![endif]-->
 <head>
-<title>TIKE test</title>
+<title>TIKE</title>
 <meta charset="utf-8" />
 <!-- <link rel="alternate" type="application/rss+xml" href="//enews.patricbrc.org/frontrss" title="PATRIC eNews Feed" /> -->
 <!-- Mobile viewport optimized -->
