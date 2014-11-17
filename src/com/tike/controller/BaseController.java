@@ -21,7 +21,9 @@ import com.tike.dao.Neo4jDao;
 @IocBean
 public class BaseController {
 
-	@Inject
+	// uncomment to enable mysql connect
+	// comment to disenable mysql connect
+	// @Inject
 	protected BasicDao basicDao;
 	protected Neo4jDao neo4jDao = new Neo4jDao();
 	protected String bodyClass = "home";
