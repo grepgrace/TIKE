@@ -141,11 +141,11 @@
 			<artifactId>axis2-codegen</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-corba</artifactId>
 			<version>1.6.2</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-fastinfoset</artifactId>
@@ -156,7 +156,7 @@
 			<artifactId>axis2-java2wsdl</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-jaxbri</artifactId>
 			<version>1.6.2</version>
@@ -170,7 +170,7 @@
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-jibx</artifactId>
 			<version>1.6.2</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-json</artifactId>
@@ -181,11 +181,11 @@
 			<artifactId>axis2-kernel</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-metadata</artifactId>
 			<version>1.6.2</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-mtompolicy</artifactId>
