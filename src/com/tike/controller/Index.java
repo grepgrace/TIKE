@@ -61,10 +61,10 @@ public class Index extends BaseController {
 			List<MetaMap> metaMapList = Tools.getMimeMaps(new File(filepath));
 			List<Node> list = new ArrayList<>();
 			for (MetaMap metaMap : metaMapList) {
-				Node metaNode = neo4jDap.getNode(Neo4jDao.labelMetaMap, "UMLSConceptUniqu",
+				Node metaNode = neo4jDao.getNode(Neo4jDao.labelMetaMap, "UMLSConceptUniqu",
 						metaMap.getUMLSConceptUniqu());
 				if (metaNode != null)
-					list.addAll(neo4jDap.getRelaNodes(metaNode,
+					list.addAll(neo4jDao.getRelaNodes(metaNode,
 						new RelationshipType[] { Neo4jDao.RelTypes.Has }));
 			}
 			request.setAttribute("geoList", list);
